@@ -17,8 +17,9 @@ class AuthMiddleware {
         return next(new ErrorHandle("login expired!", 501));
     }
   };
-  isAuthorizeRoles = (...roles) => {
+  isAuthorizeRoles = (roles) => {
     return (req, res, next) => {
+        console.log(req.role);
         if (!roles.includes(req.role)) {
           return next(
             new ErrorHandle(`Role: You is not allowed to access this resource`, 403)

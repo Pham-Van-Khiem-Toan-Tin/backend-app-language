@@ -6,12 +6,12 @@ const router = express.Router();
 
 router.route("/all").get(
     authMiddleware.isAuthenticatedUser,
-    authMiddleware.isAuthorizeRoles("STUDENT"),
+    authMiddleware.isAuthorizeRoles(["STUDENT"]),
     exerciseController.all
 )
 router.route("/complete").put(
     authMiddleware.isAuthenticatedUser,
-    authMiddleware.isAuthorizeRoles("STUDENT"),
+    authMiddleware.isAuthorizeRoles(["STUDENT"]),
     exerciseController.complete
 )
 module.exports = router;

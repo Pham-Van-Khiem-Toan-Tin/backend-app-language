@@ -7,7 +7,7 @@ router
   .route("/translate")
   .post(
     authMiddleware.isAuthenticatedUser,
-    authMiddleware.isAuthorizeRoles("STUDENT"),
+    authMiddleware.isAuthorizeRoles(["STUDENT", "TEACHER"]),
     translateController.translate
   );
   router.route("/mp3/:filename").get(

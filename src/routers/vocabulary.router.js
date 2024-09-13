@@ -5,17 +5,17 @@ const router = express.Router();
 
 router.route("/all").get(
     authMiddleware.isAuthenticatedUser,
-    authMiddleware.isAuthorizeRoles("STUDENT"),
+    authMiddleware.isAuthorizeRoles(["STUDENT"]),
     vocabularyController.all
 )
 router.route("/topic/:id").get(
     authMiddleware.isAuthenticatedUser,
-    authMiddleware.isAuthorizeRoles("STUDENT"),
+    authMiddleware.isAuthorizeRoles(["STUDENT"]),
     vocabularyController.allWordOfTopic
 )
 router.route("/topic/complete").put(
     authMiddleware.isAuthenticatedUser,
-    authMiddleware.isAuthorizeRoles("STUDENT"),
+    authMiddleware.isAuthorizeRoles(["STUDENT"]),
     vocabularyController.complete
 )
 module.exports = router;

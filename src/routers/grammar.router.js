@@ -7,14 +7,14 @@ router
   .route("/all")
   .get(
     authMiddleware.isAuthenticatedUser,
-    authMiddleware.isAuthorizeRoles("STUDENT"),
+    authMiddleware.isAuthorizeRoles(["STUDENT"]),
     grammarController.all
   );
 router
   .route("/complete")
   .put(
     authMiddleware.isAuthenticatedUser,
-    authMiddleware.isAuthorizeRoles("STUDENT"),
+    authMiddleware.isAuthorizeRoles(["STUDENT"]),
     grammarController.complete
   );
 module.exports = router;

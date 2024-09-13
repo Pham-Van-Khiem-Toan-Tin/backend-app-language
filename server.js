@@ -103,7 +103,7 @@ io.on("connection", (socket) => {
   socket.on("disconnect", async () => {
     let roomsString = await redis.get("room");
     let roomsArray = JSON.parse(roomsString ?? "[]");
-    let newRoomArray = roomsArray.filter((item) => item.roomId != socket.id);
+    let newRoomArray = roomsArray.filter((item) => item.socketStudent != socket.id);
     await redis.set("room", JSON.stringify(newRoomArray));
     io.emit("reloadRoomAvailable")
     console.log("user disconnected");

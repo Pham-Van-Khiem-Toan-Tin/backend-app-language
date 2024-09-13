@@ -36,7 +36,6 @@ class TranslateController {
   });
   speak = (req, res, next) => {
     const filename = req.params.filename;
-    console.log(__dirname);
     
     const filePath = path.join(__dirname + "/../", 'mp3', filename);
     res.sendFile(filePath);

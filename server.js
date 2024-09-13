@@ -71,7 +71,6 @@ io.on("connection", (socket) => {
         let indexRoom = roomsArray.findIndex(
           (item) => item.roomId == roomIndex
         );
-        console.log(roomsArray[indexRoom]);
 
         if (roomsArray[indexRoom].status == 1) {
           roomsArray[indexRoom].status = 2;

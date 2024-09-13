@@ -3,6 +3,7 @@ const validator = require("validator");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
+const { type } = require("os");
 require("dotenv").config();
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
@@ -83,6 +84,12 @@ const userSchema = new mongoose.Schema(
         },
       },
     ],
+    resetPasswordToken: {
+      type: String,
+    },
+    resetPasswordExpire: {
+      type: Date,
+    }
   },
   {
     timestamps: true,

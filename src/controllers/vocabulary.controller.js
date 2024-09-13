@@ -12,7 +12,6 @@ class Vocabulary {
   allWordOfTopic = catchAsyncError(async (req, res, next) => {
     try {
         let { id } = req.params;
-        console.log(id);
         
         let words = await vocabularyModel.find({ topic: id });
         res.status(200).json({ words });
@@ -23,7 +22,6 @@ class Vocabulary {
     }
   });
   complete = catchAsyncError(async (req, res, next) => {
-    console.log(req.body);
     
     let {topicId, wordId, learned} = req.body;
     let user = await userModel.findById(req.user);

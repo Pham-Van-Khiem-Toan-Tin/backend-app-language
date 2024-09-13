@@ -12,4 +12,7 @@ router
     authMiddleware.isAuthorizeRoles("STUDENT"),
     UserController.statistical
   );
+router.route("/password/reset").post(UserController.forgotPassword);
+router.route("/password/verify/:token").get(UserController.verifyResetPassword);
+router.route("/password/change").put(UserController.changePassword);
 module.exports = router;

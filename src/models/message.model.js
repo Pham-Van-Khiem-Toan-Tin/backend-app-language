@@ -10,6 +10,10 @@ const messageSchema = new mongoose.Schema({
     type: ObjectId,
     ref: "users",
   },
+  sendId: {
+    type: ObjectId,
+    ref: "user"
+  },
   roomId: {
     type: String,
     required: true,

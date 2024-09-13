@@ -1,6 +1,8 @@
 const catchAsyncError = require("../middlewares/function.middleware");
 const ErrorHandle = require("../utils/error.util");
 const messageModel = require("../models/message.model");
+const roomModel = require("../models/room.model");
+const moment = require("moment");
 
 class Chat {
   allChat = async (roomId) => {
@@ -11,45 +13,57 @@ class Chat {
       console.log(error);
     }
   };
-  allRoomNotResponse = async () => {
+  roomAvailable = async (roomIds) => {
+    let rooms = await messageModel.aggregate([
+      {
+        $match: {
+          roomId: { $in: roomIds },
+        },
+      },
+      {
+        $sort: { roomId: 1, timestamp: -1 },
+      },
+      {
+        $group: {
+          _id: "$roomId",
+          lastMessage: { $first: "$message" },
+          timestamp: { $first: "$timestamp" },
+          studentId: { $first: "$studentId" },
+          teacherId: { $first: "$teacherId" },
+        },
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "studentId",
+          foreignField: "_id",
+          as: "studentInfo",
+        },
+      },
+      {
+        $unwind: "$studentInfo",
+      },
+      {
+        $project: {
+          _id: 1,
+          lastMessage: 1,
+          timestamp: 1,
+          studentId: 1,
+          studentName: "$studentInfo.name",
+        },
+      },
+    ]);
+    return rooms;
+  };
+
+  newMessage = async (studentId, teacherId, roomId, message, sendId) => {
     try {
-      let allRoom = await messageModel.aggregate([
-        // Sắp xếp tin nhắn theo roomId và timestamp (tin nhắn mới nhất đứng đầu)
-        {
-          $sort: { roomId: 1, timestamp: -1 },
-        },
-        // Lấy ra tin nhắn cuối cùng của mỗi room
-        {
-          $group: {
-            _id: "$roomId", // Nhóm theo roomId
-            lastMessage: { $first: "$$ROOT" }, // Lấy tin nhắn đầu tiên trong mỗi nhóm (tức là tin nhắn mới nhất)
-          },
-        },
-        {
-          $match: {
-            "lastMessage.teacherId": { $eq: null }, // Nếu teacherId bằng null thì có nghĩa là chưa có phản hồi từ giáo viên
-            "lastMessage.studentId": { $ne: null }, // Đảm bảo tin nhắn cuối cùng được gửi bởi học sinh
-          },
-        },
-        {
-          $project: {
-            roomId: "$_id",
-            _id: 0,
-          },
-        },
-      ]);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-  newMessage = async (studentId, teacherId,roomId, message) => {
-    try {
-      let newChat = await messageModel.create({
+      await messageModel.create({
         roomId: roomId,
         studentId: studentId,
         message: message,
-        teacherId: null,
-        timestamp: new Date(),
+        teacherId: teacherId,
+        sendId: sendId
       });
     } catch (error) {
       console.log(error);

@@ -16,6 +16,7 @@
     "dotenv": "^16.4.5",
     "express": "^4.21.0",
     "google-translate-api-x": "^10.7.1",
+    "ioredis": "^5.4.1",
     "jsonwebtoken": "^9.0.2",
     "learningappbackend": "file:",
     "moment": "^2.30.1",
